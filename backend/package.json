@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:admin": "node scripts/seedAdmin.js",
+    "dev": "dotenv -e .env nodemon server.js",
+    "start:prod": "npm --prefix ../frontend run build && dotenv -e .env.production node server.js",
+    "start": "npm --prefix ../frontend run build -- --mode development && node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.0",
+    "dotenv-cli": "^11.0.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.0",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2",
+    "qrcode": "^1.5.4",
+    "speakeasy": "^2.0.0",
+    "ua-parser-js": "^2.0.9",
+    "uuid": "^13.0.2"
+  },
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

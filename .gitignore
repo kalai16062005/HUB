@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and local secrets
+.env
+.env.*
+
+# Build output and test artifacts
+dist/
+**/dist/
+coverage/
+
+# Logs and local credentials
+*.log
+*.pem
+*.key
+*.p12
+
+# Local editor and OS files
+.DS_Store
+.idea/
+.vscode/
