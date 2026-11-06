@@ -39,7 +39,7 @@ The product is built for an internal business workflow rather than a public-faci
 - React Router
 - Axios
 - Lucide icon set
-- Browser-based local state for favorites, pins, and auth session persistence
+- Browser local storage for auth session persistence; favorites, pins, and URL order are also stored through the backend preferences API
 
 ### Backend
 - Express 5
@@ -48,12 +48,12 @@ The product is built for an internal business workflow rather than a public-faci
 - bcrypt password hashing
 - TOTP generation and verification with `speakeasy`
 - QR-code generation using `qrcode`
-- CORS and request validation
+- CORS
 
 ## Folder structure
 
 ```text
-hub-HUB-interns/
+.
 ├── backend/
 │   ├── middleware/       # authentication, session, and audit middleware
 │   ├── models/           # Mongoose models
@@ -110,7 +110,7 @@ SEED_ADMIN_USERNAME=admin
 SEED_ADMIN_PASSWORD=replace_with_a_strong_temporary_password
 ```
 
-The server reads `PORT` (default `5000`), `MONGODB_URI`, and `JWT_SECRET`. The admin seeding script also reads `SEED_ADMIN_USERNAME` (default `admin`) and requires `SEED_ADMIN_PASSWORD`. It does not use a built-in password. Keep these values in the ignored local `backend/.env`; do not commit them.
+The server reads `PORT` (default `5000`), `MONGODB_URI`, and `JWT_SECRET`. The admin seeding script also reads `SEED_ADMIN_USERNAME` (default `admin`) and `SEED_ADMIN_PASSWORD`; if the password is omitted, the script uses a built-in fallback. Set a strong password in the ignored local `backend/.env` before seeding, and do not commit credentials.
 
 The `start:prod` script loads `backend/.env.production`. Create that local file only if using that script, and keep its values private.
 
@@ -193,11 +193,12 @@ Default local setup:
 
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:5000
-- Backend root check: http://localhost:5000/
 - Authenticated health status: `GET http://localhost:5000/api/health/status`
 - Admin-only manual URL ping: `POST http://localhost:5000/api/health/ping/:id`
 
 Set `VITE_API_URL` to the backend origin without `/api`. Some frontend modules use this variable directly without a fallback.
+
+The frontend also requests `GET /api/auth/me` and `GET /api/auth/sessions/me`, but these paths are not registered by the backend. The backend defines `GET /api/auth/sessions`.
 
 ## Authentication and security notes
 
@@ -219,7 +220,7 @@ Important notes:
 
 - `backend/server.js`: Express startup, MongoDB connection, CORS handling, and API route mounting
 - `backend/routes/auth.js`: login, logout, password change, and TOTP setup/verification
-- `backend/routes/admin.js`: user management, URL management, analytics, exports, and admin actions
+- `backend/routes/admin.js`: user management, URL management, exports, and admin actions
 - `backend/models/User.js`: user schema and password comparison logic
 - `backend/middleware/auth.js`: JWT and role-based access checks
 - `backend/routes/analytics.js`: tracking consent and analytics endpoints
@@ -244,9 +245,3 @@ This app is intended for internal use and should be deployed behind a trusted en
 - restrict CORS to trusted origins only
 - enable secure HTTPS and proper reverse-proxy configuration
 - protect `.env` files from version control
-
-## Validation
-
-The frontend scripts are `npm run build`, `npm run lint`, `npm run dev`, and `npm run preview`, all run from `frontend/`. Backend scripts are `npm run dev`, `npm start`, `npm run start:prod`, and `npm run seed:admin`, run from `backend/`. The backend's `npm test` is only a placeholder and does not run tests.
-
-In this review, the frontend build and lint commands passed. The build emitted Vite's large-chunk advisory. `node --check` passed for all 18 backend JavaScript files. `npm test` in `backend/` returned the configured “no test specified” error.
