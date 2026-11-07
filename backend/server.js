@@ -21,7 +21,7 @@ app.set('trust proxy', 'loopback, linklocal, uniquelocal');
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
 // const ALLOWED_ORIGIN = ['https://hub.tarcin.in', 'http://localhost:5173', 'http://127.0.0.1:5173'];
-const ALLOWED_ORIGIN = ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:5173', 'http://192.168.29.159:5173', 'http://192.168.29.84:5173'];
+const ALLOWED_ORIGIN = ['http://localhost:5000', 'http://127.0.0.1:5000', 'http://localhost:5173', 'http://192.168.29.159:5173', 'http://192.168.29.84:5173', 'https://hub-app-j09g.onrender.com'];
 app.use(cors({
   origin: (origin, callback) => {
     // No Origin header = same-origin request through Nginx proxy (always safe to allow).
